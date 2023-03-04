@@ -9,6 +9,14 @@ function App() {
           src={logo} 
           className="App-logo" 
           alt="logo" />
+        <a
+          className="App-link"
+          href="https://github.com/Kaygijzen"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View my GitHub profile
+        </a>
       </header>
     </div>
   );
