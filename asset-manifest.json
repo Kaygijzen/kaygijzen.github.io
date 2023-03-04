@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/kaygijzen.github.io/static/css/main.4a401028.css",
+    "main.js": "/kaygijzen.github.io/static/js/main.20812ebb.js",
+    "static/js/787.89dcb44b.chunk.js": "/kaygijzen.github.io/static/js/787.89dcb44b.chunk.js",
+    "static/media/construction.png": "/kaygijzen.github.io/static/media/construction.09d29085dfeb6c56f28e.png",
+    "index.html": "/kaygijzen.github.io/index.html",
+    "main.4a401028.css.map": "/kaygijzen.github.io/static/css/main.4a401028.css.map",
+    "main.20812ebb.js.map": "/kaygijzen.github.io/static/js/main.20812ebb.js.map",
+    "787.89dcb44b.chunk.js.map": "/kaygijzen.github.io/static/js/787.89dcb44b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4a401028.css",
+    "static/js/main.20812ebb.js"
+  ]
+}
