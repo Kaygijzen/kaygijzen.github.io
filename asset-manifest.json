@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/kaygijzen.github.io/static/css/main.a072d3b1.css",
-    "main.js": "/kaygijzen.github.io/static/js/main.d5e0d25f.js",
+    "main.js": "/kaygijzen.github.io/static/js/main.2369c427.js",
     "static/js/787.89dcb44b.chunk.js": "/kaygijzen.github.io/static/js/787.89dcb44b.chunk.js",
     "static/media/resume.pdf": "/kaygijzen.github.io/static/media/resume.09243a26045e17f24db8.pdf",
     "static/media/profile.svg": "/kaygijzen.github.io/static/media/profile.c3700b103e136d4c37b41eb261ee9743.svg",
@@ -29,11 +29,11 @@
     "index.html": "/kaygijzen.github.io/index.html",
     "static/media/windows.svg": "/kaygijzen.github.io/static/media/windows.680a11acd0ab401f69e83c7caba17dc0.svg",
     "main.a072d3b1.css.map": "/kaygijzen.github.io/static/css/main.a072d3b1.css.map",
-    "main.d5e0d25f.js.map": "/kaygijzen.github.io/static/js/main.d5e0d25f.js.map",
+    "main.2369c427.js.map": "/kaygijzen.github.io/static/js/main.2369c427.js.map",
     "787.89dcb44b.chunk.js.map": "/kaygijzen.github.io/static/js/787.89dcb44b.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a072d3b1.css",
-    "static/js/main.d5e0d25f.js"
+    "static/js/main.2369c427.js"
   ]
 }
