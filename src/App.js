@@ -18,8 +18,8 @@ function App() {
     <div className="px-6 lg:px-20 xl:px-36 bg-dark-500">
       <Navbar />
       <Hiro />
-      {/* <Skills /> */}
-      {/* <Honors /> */}
+      <Skills />
+      <Honors />
       <Footer />
     </div>
   );
