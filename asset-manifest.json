@@ -1,19 +1,11 @@
 {
   "files": {
-    "main.css": "/kaygijzen.github.io/static/css/main.19eb03a3.css",
-    "main.js": "/kaygijzen.github.io/static/js/main.7b727c8f.js",
+    "main.css": "/kaygijzen.github.io/static/css/main.a072d3b1.css",
+    "main.js": "/kaygijzen.github.io/static/js/main.d5e0d25f.js",
     "static/js/787.89dcb44b.chunk.js": "/kaygijzen.github.io/static/js/787.89dcb44b.chunk.js",
     "static/media/resume.pdf": "/kaygijzen.github.io/static/media/resume.09243a26045e17f24db8.pdf",
-    "static/media/dicoding-js.png": "/kaygijzen.github.io/static/media/dicoding-js.0d9f522f2e7d05619f4e.png",
-    "static/media/dicoding-aws.png": "/kaygijzen.github.io/static/media/dicoding-aws.11f75438858fbac4779f.png",
-    "static/media/dicoding-network.png": "/kaygijzen.github.io/static/media/dicoding-network.3ed04d5105ea25a7cadb.png",
-    "static/media/adinusa.png": "/kaygijzen.github.io/static/media/adinusa.c8071ddbcb7d23388650.png",
     "static/media/profile.svg": "/kaygijzen.github.io/static/media/profile.c3700b103e136d4c37b41eb261ee9743.svg",
     "static/media/mikrotik.svg": "/kaygijzen.github.io/static/media/mikrotik.d2e17a6764779d1cc982433d85aeeb58.svg",
-    "static/media/progate-js.png": "/kaygijzen.github.io/static/media/progate-js.4e4006cbc905d0693fae.png",
-    "static/media/progate-htmlcss.png": "/kaygijzen.github.io/static/media/progate-htmlcss.60406a4a02834b312170.png",
-    "static/media/mtcna.jpg": "/kaygijzen.github.io/static/media/mtcna.2ee5684f51d76ad95490.jpg",
-    "static/media/fcc-responsive.png": "/kaygijzen.github.io/static/media/fcc-responsive.af4db224df54cb3ca714.png",
     "static/media/logo.svg": "/kaygijzen.github.io/static/media/logo.bba63c759c3e6abe565c79a721303680.svg",
     "static/media/linux.svg": "/kaygijzen.github.io/static/media/linux.ff969ad1bae76cb9a7cc6aca65fd15f5.svg",
     "static/media/kubernetes.svg": "/kaygijzen.github.io/static/media/kubernetes.9c2b252df012670856cc2db6e7364d84.svg",
@@ -36,12 +28,12 @@
     "static/media/express.svg": "/kaygijzen.github.io/static/media/express.ea97b712340ffb8f11d85ccb96309507.svg",
     "index.html": "/kaygijzen.github.io/index.html",
     "static/media/windows.svg": "/kaygijzen.github.io/static/media/windows.680a11acd0ab401f69e83c7caba17dc0.svg",
-    "main.19eb03a3.css.map": "/kaygijzen.github.io/static/css/main.19eb03a3.css.map",
-    "main.7b727c8f.js.map": "/kaygijzen.github.io/static/js/main.7b727c8f.js.map",
+    "main.a072d3b1.css.map": "/kaygijzen.github.io/static/css/main.a072d3b1.css.map",
+    "main.d5e0d25f.js.map": "/kaygijzen.github.io/static/js/main.d5e0d25f.js.map",
     "787.89dcb44b.chunk.js.map": "/kaygijzen.github.io/static/js/787.89dcb44b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.19eb03a3.css",
-    "static/js/main.7b727c8f.js"
+    "static/css/main.a072d3b1.css",
+    "static/js/main.d5e0d25f.js"
   ]
 }
