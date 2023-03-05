@@ -36,7 +36,7 @@ export default function Skills() {
       };
 
     return (
-        <div id="skills" className="mt-4 text-white">
+        <div id="skills" className="mt-4 text-white pb-12">
             <h1 className="text-2xl font-bold">Skills</h1>
             <p className="font-light text-gray-400">Here are some of my skills</p>
 
@@ -62,7 +62,7 @@ export default function Skills() {
                 <SkillCard name="gitlab" experience="1 years" img={gitlab} /> */}
                 </Slider>
             </div>
-            <img src={hr} className="w-full mt-8 md:h-3" alt="hr" />
+            {/* <img src={hr} className="w-full mt-8 md:h-3" alt="hr" /> */}
         </div>
     )
 }

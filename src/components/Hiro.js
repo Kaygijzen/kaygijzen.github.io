@@ -2,7 +2,6 @@ import {useState} from 'react'
 
 import profile from '../assets/profile.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faCircleArrowRight, } from "@fortawesome/free-solid-svg-icons";
 import {  faGithub, faInstagram, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import hr from '../assets/curve-hr.svg'
 
@@ -28,6 +27,7 @@ export default function Hiro () {
                     <h1 className="text-xl text-gray-400">Hi, I'm</h1>
                     <h1 className="text-2xl font-bold">Kay Gijzen</h1>
                     <p className="text-xl font-bold text-gray-300">Software Engineer</p>
+                    <p className="text-md font-light text-gray-400 ">Programming wizzkid, proficient in several programming languages, including Python, Java, Swift, Kotlin, C/C++, C#. I hold a degree in Informatics and have since worked on a variety of projects, ranging from mobile applications to software systems and machine learning implementations.</p>
                 </div>
 
                 <ul className='flex mt-2 gap-4 items-center'>
@@ -42,7 +42,8 @@ export default function Hiro () {
                     </li>
                 </ul>
             </div>
-            <img src={hr} className="w-full md:h-2 absolute bottom-0" alt="hr" />
+            {/* <img src={hr} className="w-full md:h-2 absolute bottom-0" alt="hr" /> */}
+            
         </div>
         </>
     )
