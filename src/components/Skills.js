@@ -48,7 +48,7 @@ export default function Skills() {
                 <SkillCard name="C#" experience="3 years" img={cSharp} />
                 <SkillCard name="Linux" experience="2 years" img={linux} />
                 <SkillCard name="Git" experience="4 years" img={git} />
-                <SkillCard name="C/C++" experience="1 years" img={cpp} />
+                <SkillCard name="C/C++" experience="1 year" img={cpp} />
                 {/* <SkillCard name="tailwind" experience="1 years" img={tailwind} /> */}
                 {/* <SkillCard name="kvm" experience="1 years" img={kvm} /> */}
                 {/* <SkillCard name="mikrotik" experience="1 years" img={mikrotik} /> */}
@@ -57,7 +57,7 @@ export default function Skills() {
                 {/* <SkillCard name="windows" experience="1 years" img={windows} /> */}
                 {/* <SkillCard name="cisco" experience="1 years" img={cisco} /> */}
                 {/* <SkillCard name="docker" experience="1 years" img={docker} /> */}
-                <SkillCard name="Bash" experience="1 years" img={bash} />
+                <SkillCard name="Bash" experience="1 year" img={bash} />
                 {/* <SkillCard name="express" experience="1 years" img={express} />
                 <SkillCard name="gitlab" experience="1 years" img={gitlab} /> */}
                 </Slider>
