@@ -27,7 +27,7 @@ export default function Hiro () {
                     <h1 className="text-xl text-gray-400">Hi, I'm</h1>
                     <h1 className="text-2xl font-bold">Kay Gijzen</h1>
                     <p className="text-xl font-bold text-gray-300">Software Engineer</p>
-                    <p className="text-md font-light text-gray-400 ">Programming wizzkid, proficient in several programming languages, including Python, Java, Swift, Kotlin, C/C++, C#. I hold a degree in Informatics and have since worked on a variety of projects, ranging from mobile applications to software systems and machine learning implementations.</p>
+                    <p className="text-md font-light text-gray-400 ">Passionate software engineer with a strong focus on Artificial Intelligence and its transformative potential. Programming wizzkid, proficient in several programming languages, including Python, Java, Swift, Kotlin, C/C++, C#. I hold a degree in Informatics and have since worked on a variety of projects, ranging from mobile applications to software systems and machine learning implementations.</p>
                 </div>
 
                 <ul className='flex mt-2 gap-4 items-center'>
