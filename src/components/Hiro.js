@@ -34,9 +34,9 @@ export default function Hiro () {
                    <li>
                         <a href='https://github.com/kaygijzen' rel="noreferrer" target="_blank"><FontAwesomeIcon size='2xl' icon={faGithub} /></a>
                    </li> 
-                    <li>
+                    {/* <li>
                         <a href='https://instagram.com/kay_gzn' rel="noreferrer" target="_blank"><FontAwesomeIcon size='2xl' icon={faInstagram} /></a>
-                    </li>
+                    </li> */}
                     <li>
                         <a href='https://www.linkedin.com/in/kay-gijzen-a53881125/' rel="noreferrer" target="_blank"><FontAwesomeIcon size='2xl' icon={faLinkedinIn} /></a>
                     </li>

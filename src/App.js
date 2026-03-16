@@ -23,7 +23,7 @@ function Home() {
             <Hiro />
             <Skills />
             <Honors />
-            <Projects />
+            {/* <Projects /> */}
             <Footer />
         </div>
     );

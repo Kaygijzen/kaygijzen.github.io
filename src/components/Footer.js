@@ -6,7 +6,7 @@ export default function Footer(){
       <ul className="text-center">
         <li><a href="#home" className="hover:underline">About</a></li>
         <li><a href="#skills" className="hover:underline">Skills</a></li>        
-        <li><a href="#projects" className="hover:underline">Projects</a></li>
+        {/* <li><a href="#projrects" className="hover:underline">Projects</a></li> */}
         <li><a href="#honors" className="hover:underline">Honor & Awards</a></li>    
 
       </ul>
