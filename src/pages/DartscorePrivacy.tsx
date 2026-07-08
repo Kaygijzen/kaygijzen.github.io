@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function DartscorePrivacy() {
     return (
         <div className="min-h-screen bg-black text-white px-6 py-12 lg:px-20 xl:px-36">

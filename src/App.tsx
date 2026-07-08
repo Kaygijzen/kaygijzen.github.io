@@ -8,9 +8,9 @@ import {
   useReducedMotion,
   type PanInfo,
 } from 'framer-motion'
-import { Code2, Bot, Mail, ExternalLink, ArrowDown, House, ChevronLeft, ChevronRight, Brain, Network } from 'lucide-react'
+import { Code2, Bot, Mail, ArrowDown, House, ChevronLeft, ChevronRight, Brain, Network } from 'lucide-react'
 import type { IconType } from 'react-icons'
-import { SiPython, SiPytorch, SiLangchain, SiDatabricks, SiMlflow, SiDocker, SiFastapi, SiReact, SiPostgresql } from 'react-icons/si'
+import { SiPython, SiPytorch, SiLangchain, SiDatabricks, SiMlflow, SiDocker, SiFastapi, SiReact, SiPostgresql, SiGithub } from 'react-icons/si'
 
 // ─── Animation primitives ─────────────────────────────────────────────────────
 
@@ -173,6 +173,59 @@ const monogramData = [
   { letter: 'Y', word: 'Young Professional', bg: '#FAEEDA', border: '#EF9F27', text: '#412402', accent: '#854F0B' },
 ]
 
+const LinkedInIcon = (
+  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden>
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+  </svg>
+)
+
+function ContactButton({
+  href,
+  ariaLabel,
+  icon,
+  external,
+  baseBorder,
+  baseBg,
+  baseColor,
+  hoverBg,
+  hoverColor,
+}: {
+  href: string
+  ariaLabel: string
+  icon: ReactNode
+  external?: boolean
+  baseBorder: string
+  baseBg: string
+  baseColor: string
+  hoverBg: string
+  hoverColor: string
+}) {
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <a
+      href={href}
+      aria-label={ariaLabel}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        width: 40, height: 40,
+        borderRadius: '50%',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        border: hovered ? '1.5px solid transparent' : `1.5px solid ${baseBorder}`,
+        background: hovered ? hoverBg : baseBg,
+        color: hovered ? hoverColor : baseColor,
+        transition: 'background 0.2s ease, color 0.2s ease, border-color 0.2s ease',
+        textDecoration: 'none',
+        flexShrink: 0,
+      }}
+    >
+      {icon}
+    </a>
+  )
+}
+
 function PortraitPhoto() {
   const [error, setError] = useState(false)
   const reduced = useReducedMotion()
@@ -244,8 +297,6 @@ function Hero() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [taglineIndex, setTaglineIndex] = useState(0)
   const [tagVisible, setTagVisible] = useState(true)
-  const [emailHovered, setEmailHovered] = useState(false)
-  const [linkedinHovered, setLinkedinHovered] = useState(false)
   const reduced = useReducedMotion()
 
   useEffect(() => {
@@ -417,48 +468,38 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.65, ease: EASE }}
           >
-            <a
+            <ContactButton
               href="mailto:kay.gijzen@sogeti.com"
-              aria-label="Send email"
-              onMouseEnter={() => setEmailHovered(true)}
-              onMouseLeave={() => setEmailHovered(false)}
-              style={{
-                width: 40, height: 40,
-                borderRadius: '50%',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                border: emailHovered ? '1.5px solid transparent' : '1.5px solid rgba(22,22,16,0.16)',
-                background: emailHovered ? '#185FA5' : 'rgba(22,22,16,0.05)',
-                color: emailHovered ? '#fff' : '#6B6B65',
-                transition: 'background 0.2s ease, color 0.2s ease, border-color 0.2s ease',
-                textDecoration: 'none',
-                flexShrink: 0,
-              }}
-            >
-              <Mail size={17} />
-            </a>
-            <a
+              ariaLabel="Send email"
+              icon={<Mail size={17} />}
+              baseBorder="rgba(22,22,16,0.16)"
+              baseBg="rgba(22,22,16,0.05)"
+              baseColor="#6B6B65"
+              hoverBg="#185FA5"
+              hoverColor="#fff"
+            />
+            <ContactButton
               href="https://linkedin.com/in/kay-gijzen"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn profile"
-              onMouseEnter={() => setLinkedinHovered(true)}
-              onMouseLeave={() => setLinkedinHovered(false)}
-              style={{
-                width: 40, height: 40,
-                borderRadius: '50%',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                border: linkedinHovered ? '1.5px solid transparent' : '1.5px solid rgba(22,22,16,0.16)',
-                background: linkedinHovered ? '#0A66C2' : 'rgba(22,22,16,0.05)',
-                color: linkedinHovered ? '#fff' : '#6B6B65',
-                transition: 'background 0.2s ease, color 0.2s ease, border-color 0.2s ease',
-                textDecoration: 'none',
-                flexShrink: 0,
-              }}
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden>
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
-            </a>
+              external
+              ariaLabel="LinkedIn profile"
+              icon={LinkedInIcon}
+              baseBorder="rgba(22,22,16,0.16)"
+              baseBg="rgba(22,22,16,0.05)"
+              baseColor="#6B6B65"
+              hoverBg="#0A66C2"
+              hoverColor="#fff"
+            />
+            <ContactButton
+              href="https://github.com/kaygijzen"
+              external
+              ariaLabel="GitHub profile"
+              icon={<SiGithub size={17} />}
+              baseBorder="rgba(22,22,16,0.16)"
+              baseBg="rgba(22,22,16,0.05)"
+              baseColor="#6B6B65"
+              hoverBg="#181717"
+              hoverColor="#fff"
+            />
           </motion.div>
         </div>
       </div>
@@ -486,222 +527,6 @@ function Hero() {
         </motion.div>
       </motion.a>
     </section>
-  )
-}
-
-// ─── Identity ─────────────────────────────────────────────────────────────────
-
-const identityCards = [
-  {
-    letter: 'K',
-    word: 'Kreative',
-    description:
-      'Driven by curiosity to understand how things work, and creativity to discover how they can create greater value.',
-    bg: '#E6F1FB',
-    border: '#85B7EB',
-    text: '#042C53',
-    accent: '#185FA5',
-  },
-  {
-    letter: 'A',
-    word: 'Artificial Intelligence',
-    description:
-      'LLMs, RAG pipelines, autonomous agents, and the evaluation frameworks to know when they\'re actually working.',
-    bg: '#E1F5EE',
-    border: '#5DCAA5',
-    text: '#04342C',
-    accent: '#0F6E56',
-  },
-  {
-    letter: 'Y',
-    word: 'Young Professional',
-    description:
-      'Combining fresh perspectives and an analytical mindset with the experience to deliver and the drive to keep learning.',
-    bg: '#FAEEDA',
-    border: '#EF9F27',
-    text: '#412402',
-    accent: '#854F0B',
-  },
-]
-
-function Identity() {
-  return (
-    <section id="identity" className="py-20 px-6 bg-white">
-      <div className="max-w-5xl mx-auto">
-        <FadeUp className="text-center mb-16">
-          <p
-            className="text-xs tracking-widest uppercase mb-3"
-            style={{ color: '#A8A8A3', fontFamily: '"Space Grotesk", sans-serif' }}
-          >
-            The Monogram
-          </p>
-          <h2
-            className="text-3xl md:text-4xl font-bold"
-            style={{ fontFamily: '"Space Grotesk", sans-serif', color: '#161610', letterSpacing: '-0.02em' }}
-          >
-            K · A · Y
-          </h2>
-        </FadeUp>
-
-        <StaggerGrid className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {identityCards.map((card) => (
-            <StaggerItem key={card.letter}>
-              <div
-                className="rounded-2xl p-8 border-2 flex flex-col gap-5 h-full"
-                style={{ background: card.bg, borderColor: card.border }}
-              >
-                <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center text-lg font-bold"
-                  style={{ background: card.accent, color: '#fff', fontFamily: '"Space Grotesk", sans-serif' }}
-                >
-                  {card.letter}
-                </div>
-                <div>
-                  <h3
-                    className="text-xl font-semibold mb-2"
-                    style={{ fontFamily: '"Space Grotesk", sans-serif', color: card.text }}
-                  >
-                    {card.word}
-                  </h3>
-                  <p
-                    className="text-sm leading-relaxed"
-                    style={{ color: card.text, opacity: 0.72, fontFamily: 'Inter, sans-serif' }}
-                  >
-                    {card.description}
-                  </p>
-                </div>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerGrid>
-      </div>
-    </section>
-  )
-}
-
-// ─── Color Palette ────────────────────────────────────────────────────────────
-
-const paletteData = [
-  { name: 'Blue', label: 'Tech & Software', base: '#185FA5', tint: '#E6F1FB', border: '#85B7EB', dark: '#042C53' },
-  { name: 'Teal', label: 'AI & Agents', base: '#0F6E56', tint: '#E1F5EE', border: '#5DCAA5', dark: '#04342C' },
-  { name: 'Amber', label: 'Limburg / Warmth', base: '#854F0B', tint: '#FAEEDA', border: '#EF9F27', dark: '#412402' },
-  { name: 'Coral', label: 'Music & Creativity', base: '#993C1D', tint: '#FAECE7', border: '#F0997B', dark: '#4A1B0C' },
-]
-
-type PaletteColor = (typeof paletteData)[number]
-
-function PaletteCard({ color }: { color: PaletteColor }) {
-  const [hovered, setHovered] = useState(false)
-  const reduced = useReducedMotion()
-
-  return (
-    <motion.div
-      whileHover={reduced ? {} : { y: -6 }}
-      transition={{ type: 'spring', stiffness: 350, damping: 32 }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      style={{ borderRadius: 16, overflow: 'hidden', border: `1.5px solid ${color.border}` }}
-    >
-      {/* Expanding swatch with hex overlay */}
-      <div style={{ position: 'relative' }}>
-        <motion.div
-          animate={{ height: hovered && !reduced ? 160 : 112 }}
-          transition={{ type: 'spring', stiffness: 280, damping: 28 }}
-          style={{ background: color.base }}
-        />
-        <AnimatePresence>
-          {hovered && !reduced && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.18 }}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                pointerEvents: 'none',
-              }}
-            >
-              <span
-                style={{
-                  color: 'rgba(255,255,255,0.92)',
-                  fontFamily: 'monospace',
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.06em',
-                  textShadow: '0 1px 6px rgba(0,0,0,0.28)',
-                }}
-              >
-                {color.base}
-              </span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Tint band */}
-      <div style={{ height: 32, background: color.tint }} />
-
-      {/* Info */}
-      <div style={{ padding: 16, background: '#fff' }}>
-        <p
-          style={{
-            fontFamily: '"Space Grotesk", sans-serif',
-            color: color.dark,
-            fontWeight: 600,
-            fontSize: '0.875rem',
-            marginBottom: 2,
-          }}
-        >
-          {color.name}
-        </p>
-        <p
-          style={{
-            color: '#7A7A75',
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '0.75rem',
-            marginBottom: 14,
-          }}
-        >
-          {color.label}
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          {[
-            { label: 'Base', value: color.base },
-            { label: 'Tint', value: color.tint },
-            { label: 'Border', value: color.border },
-            { label: 'Dark', value: color.dark },
-          ].map((swatch) => (
-            <div
-              key={swatch.label}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-            >
-              <span style={{ color: '#A8A8A3', fontFamily: 'Inter, sans-serif', fontSize: '0.75rem' }}>
-                {swatch.label}
-              </span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <div
-                  style={{
-                    width: 12,
-                    height: 12,
-                    borderRadius: '50%',
-                    background: swatch.value,
-                    border: '1px solid #E2E2DF',
-                    flexShrink: 0,
-                  }}
-                />
-                <span style={{ color: '#56564F', fontFamily: 'monospace', fontSize: '0.72rem' }}>
-                  {swatch.value}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </motion.div>
   )
 }
 
@@ -1176,36 +1001,39 @@ function Footer() {
           </p>
         </div>
 
-        <div className="flex items-center gap-4 flex-wrap justify-center">
-          <a
+        <div className="flex items-center gap-3 flex-wrap justify-center">
+          <ContactButton
             href="mailto:kay.gijzen@sogeti.com"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-opacity hover:opacity-80"
-            style={{
-              background: '#272721',
-              color: '#E2E2DF',
-              fontFamily: '"Space Grotesk", sans-serif',
-              border: '1px solid #3D3D37',
-              textDecoration: 'none',
-            }}
-          >
-            <Mail size={15} />
-            Email
-          </a>
-          <a
+            ariaLabel="Send email"
+            icon={<Mail size={17} />}
+            baseBorder="#3D3D37"
+            baseBg="#272721"
+            baseColor="#E2E2DF"
+            hoverBg="#185FA5"
+            hoverColor="#fff"
+          />
+          <ContactButton
             href="https://linkedin.com/in/kay-gijzen"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-opacity hover:opacity-80"
-            style={{
-              background: '#185FA5',
-              color: '#E6F1FB',
-              fontFamily: '"Space Grotesk", sans-serif',
-              textDecoration: 'none',
-            }}
-          >
-            <ExternalLink size={15} />
-            LinkedIn
-          </a>
+            external
+            ariaLabel="LinkedIn profile"
+            icon={LinkedInIcon}
+            baseBorder="#3D3D37"
+            baseBg="#272721"
+            baseColor="#E2E2DF"
+            hoverBg="#0A66C2"
+            hoverColor="#fff"
+          />
+          <ContactButton
+            href="https://github.com/kaygijzen"
+            external
+            ariaLabel="GitHub profile"
+            icon={<SiGithub size={16} />}
+            baseBorder="#3D3D37"
+            baseBg="#272721"
+            baseColor="#E2E2DF"
+            hoverBg="#185FA5"
+            hoverColor="#fff"
+          />
         </div>
 
         <p className="text-xs" style={{ color: '#3D3D37', fontFamily: 'Inter, sans-serif' }}>
