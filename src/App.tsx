@@ -114,8 +114,8 @@ const navLinks = [
   { href: '#hero', label: null, short: null, icon: House },
   // { href: '#identity', label: 'K · A · Y', short: 'K · A · Y', icon: null },
   // { href: '#palette', label: 'Colors', short: 'Colors', icon: null },
-  { href: '#build', label: 'What I Build.', short: 'What I Build.', icon: null },
-  { href: '#motifs', label: 'Outside Work.', short: 'Outside Work.', icon: null },
+  { href: '#whatIBuild', label: 'What I Build.', short: 'What I Build.', icon: null },
+  { href: '#outsideWork', label: 'Outside Work.', short: 'Outside Work.', icon: null },
 ]
 
 function Nav() {
@@ -484,12 +484,12 @@ const buildItems = [
 
 const TOOLKIT_ITEMS: { icon: IconType; label: string }[] = [
   { icon: SiPython, label: 'Python' },
-  { icon: SiPytorch, label: 'PyTorch' },
   { icon: SiLangchain, label: 'LangChain' },
   { icon: SiDatabricks, label: 'Databricks' },
   { icon: SiMlflow, label: 'MLflow' },
   { icon: SiDocker, label: 'Docker' },
   { icon: SiFastapi, label: 'FastAPI' },
+  { icon: SiPytorch, label: 'PyTorch' },
   { icon: SiReact, label: 'React' },
   { icon: SiPostgresql, label: 'PostgreSQL' },
 ]
@@ -530,7 +530,7 @@ function ToolkitCarousel() {
   }
 
   return (
-    <FadeUp delay={0.2} className="mt-14">
+    <FadeUp delay={0.2} className="mt-20">
       <p
         className="text-xs tracking-widest uppercase text-center mb-7"
         style={{ color: '#A8A8A3', fontFamily: '"Space Grotesk", sans-serif' }}
@@ -651,7 +651,7 @@ function WhatIBuild() {
   const reduced = useReducedMotion()
 
   return (
-    <section id="build" className="py-20 px-6 bg-white">
+    <section id="whatIBuild" className="py-20 px-6 bg-white">
       <div className="max-w-5xl mx-auto">
         <FadeUp className="text-center mb-6">
           <h2
@@ -662,7 +662,7 @@ function WhatIBuild() {
           </h2>
         </FadeUp>
 
-        <FadeUp delay={0.1} className="text-center mb-7">
+        <FadeUp delay={0.1} className="text-center mb-16">
           <p
             className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
             style={{ color: '#56564F', fontFamily: 'Inter, sans-serif' }}
@@ -801,7 +801,7 @@ function BentoCard({
 
 function Personal() {
   return (
-    <section id="motifs" className="py-20 px-6" style={{ background: '#F8F8F7' }}>
+    <section id="outsideWork" className="py-20 px-6" style={{ background: '#F8F8F7' }}>
       <div className="max-w-5xl mx-auto">
         <FadeUp className="text-center mb-6">
           {/* <p
