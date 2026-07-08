@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import {
   motion,
-  AnimatePresence,
   useScroll,
   useSpring,
   useInView,
@@ -167,12 +166,6 @@ function Nav() {
 
 const taglines = ['Engineering clever systems that create impact, end-to-end.', 'Combining AI and software engineering.']
 
-const monogramData = [
-  { letter: 'K', word: 'Kreative', bg: '#E6F1FB', border: '#85B7EB', text: '#042C53', accent: '#185FA5' },
-  { letter: 'A', word: 'Artificial Intelligence', bg: '#E1F5EE', border: '#5DCAA5', text: '#04342C', accent: '#0F6E56' },
-  { letter: 'Y', word: 'Young Professional', bg: '#FAEEDA', border: '#EF9F27', text: '#412402', accent: '#854F0B' },
-]
-
 const LinkedInIcon = (
   <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden>
     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
@@ -232,11 +225,11 @@ function PortraitPhoto() {
 
   return (
     <motion.div
-      initial={reduced ? false : { opacity: 0, scale: 0.94, x: 24 }}
-      animate={{ opacity: 1, scale: 1, x: 0 }}
-      transition={{ duration: 0.9, delay: 0.35, ease: EASE }}
-      className="relative w-52 sm:w-64 md:w-full"
-      style={{ maxWidth: '340px' }}
+      initial={reduced ? false : { opacity: 0, scale: 0.94, y: -12 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.9, delay: 0.25, ease: EASE }}
+      className="relative w-64 sm:w-80 md:w-full"
+      style={{ maxWidth: '460px' }}
     >
       <div
         style={{
@@ -294,7 +287,6 @@ function PortraitPhoto() {
 }
 
 function Hero() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [taglineIndex, setTaglineIndex] = useState(0)
   const [tagVisible, setTagVisible] = useState(true)
   const reduced = useReducedMotion()
@@ -318,101 +310,28 @@ function Hero() {
     >
       {/* Ambient blobs — hidden on mobile (perf), visible sm+ */}
       <div aria-hidden className="hidden sm:block absolute inset-0 overflow-hidden pointer-events-none">
-        <div style={{ position: 'absolute', top: '-22%', left: '-12%', width: '55vw', height: '55vw', borderRadius: '50%', background: '#185FA5', opacity: 0.08, filter: 'blur(100px)' }} />
-        <div style={{ position: 'absolute', top: '28%', right: '-18%', width: '48vw', height: '48vw', borderRadius: '50%', background: '#0F6E56', opacity: 0.065, filter: 'blur(90px)' }} />
-        <div style={{ position: 'absolute', bottom: '-12%', left: '22%', width: '42vw', height: '42vw', borderRadius: '50%', background: '#854F0B', opacity: 0.055, filter: 'blur(85px)' }} />
-        <div style={{ position: 'absolute', top: '8%', right: '18%', width: '24vw', height: '24vw', borderRadius: '50%', background: '#993C1D', opacity: 0.04, filter: 'blur(65px)' }} />
+        <div style={{ position: 'absolute', top: '-20%', left: '-10%', width: '50vw', height: '50vw', borderRadius: '50%', background: '#185FA5', opacity: 0.075, filter: 'blur(100px)' }} />
+        <div style={{ position: 'absolute', top: '10%', right: '-20%', width: '58vw', height: '58vw', borderRadius: '50%', background: '#0F6E56', opacity: 0.075, filter: 'blur(95px)' }} />
+        <div style={{ position: 'absolute', bottom: '-14%', left: '18%', width: '42vw', height: '42vw', borderRadius: '50%', background: '#854F0B', opacity: 0.055, filter: 'blur(85px)' }} />
+        <div style={{ position: 'absolute', top: '2%', right: '24%', width: '26vw', height: '26vw', borderRadius: '50%', background: '#993C1D', opacity: 0.04, filter: 'blur(65px)' }} />
       </div>
 
       {/*
-        Three-area CSS grid:
-          mobile (1 col): monogram → portrait → text+buttons
-          desktop (2 col): [monogram] [portrait (row-span-2)]
-                           [text+buttons]
-        Grid auto-placement handles the ordering without order hacks.
+        Two-area CSS grid, photo as the primary visual:
+          mobile (1 col): portrait → text+buttons
+          desktop (2 col, even split): [text+buttons] [portrait]
+        `order` classes keep the mobile stacking (photo first) while
+        swapping to text-left/photo-right on desktop.
       */}
-      <div className="relative w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_38%] gap-10 md:gap-x-14 md:gap-y-8">
+      <div className="relative w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-x-16 items-center">
 
-        {/* Monogram — mobile: row 1 | desktop: col 1, row 1 */}
-        <div className="flex items-center justify-center md:justify-start">
-          <div className="relative flex items-center gap-2 md:gap-6 mb-6">
-            {monogramData.map((item, i) => (
-              <div key={item.letter} className="flex items-center gap-2 md:gap-6">
-                <div className="relative flex flex-col items-center">
-                  <motion.div
-                    className="w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center border-2 cursor-default select-none"
-                    style={{ background: item.bg, borderColor: item.border }}
-                    animate={
-                      reduced
-                        ? {}
-                        : {
-                            opacity: activeIndex !== null && activeIndex !== i ? 0.35 : 1,
-                            scale: activeIndex === i ? 1.1 : 1,
-                            boxShadow:
-                              activeIndex === i
-                                ? `0 8px 32px ${item.accent}44`
-                                : '0 0px 0px rgba(0,0,0,0)',
-                          }
-                    }
-                    transition={{ type: 'spring', stiffness: 340, damping: 28 }}
-                    onHoverStart={() => setActiveIndex(i)}
-                    onHoverEnd={() => setActiveIndex(null)}
-                    onClick={() => setActiveIndex((prev) => (prev === i ? null : i))}
-                  >
-                    <span
-                      className="text-4xl md:text-5xl font-bold"
-                      style={{ color: item.text, fontFamily: '"Space Grotesk", sans-serif' }}
-                    >
-                      {item.letter}
-                    </span>
-                  </motion.div>
-
-                  {/* Meaning word — absolutely below the box */}
-                  <div
-                    className="absolute left-1/2 whitespace-nowrap pointer-events-none"
-                    style={{ top: 'calc(100% + 8px)', transform: 'translateX(-50%)' }}
-                  >
-                    <AnimatePresence>
-                      {activeIndex === i && (
-                        <motion.p
-                          initial={{ opacity: 0, y: -5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                          transition={{ duration: 0.18 }}
-                          className="text-xs font-semibold"
-                          style={{
-                            color: item.accent,
-                            fontFamily: '"Space Grotesk", sans-serif',
-                            letterSpacing: '0.04em',
-                          }}
-                        >
-                          {item.word}
-                        </motion.p>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </div>
-
-                {i < 2 && (
-                  <span
-                    className="text-lg md:text-3xl font-light select-none"
-                    style={{ color: '#CBCBC7', fontFamily: '"Space Grotesk", sans-serif' }}
-                  >
-                    ·
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Portrait — mobile: row 2 | desktop: col 2, rows 1–2 */}
-        <div className="flex justify-center md:self-center md:row-span-2">
+        {/* Portrait — mobile: row 1 | desktop: col 2 */}
+        <div className="order-1 md:order-2 flex justify-center">
           <PortraitPhoto />
         </div>
 
-        {/* Name + role + tagline + buttons — mobile: row 3 | desktop: col 1, row 2 */}
-        <div className="flex flex-col items-center md:items-start">
+        {/* Name + role + tagline + buttons — mobile: row 2 | desktop: col 1 */}
+        <div className="order-2 md:order-1 flex flex-col items-center md:items-start">
           {/* Name */}
           <motion.h1
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-center md:text-left leading-tight mb-3"
@@ -905,7 +824,7 @@ function Personal() {
             className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
             style={{ color: '#56564F', fontFamily: 'Inter, sans-serif' }}
           >
-            Where I live, what I love, where I'm from.
+            While I get a lot of energy from my work, these are the places, passions, and side quests that fill the hours beyond it. Because there's more to life than stand-ups and deployment pipelines.
           </p>
         </FadeUp>
 
@@ -927,7 +846,7 @@ function Personal() {
           />
           <BentoCard
             title="Music"
-            subtitle="Playing guitar in my own bands, and exploring live music, from reggae to punk."
+            subtitle="Playing guitar in my own bands, and enjoying live music, from reggae to punk."
             imageSrc="/images/guitar.jpg"
             imageAlt="Guitar"
             accentBorder="#F0997B"
@@ -1053,8 +972,6 @@ export default function App() {
       <Nav />
       <main>
         <Hero />
-        {/* <Identity /> */}
-        {/* <ColorPalette /> */}
         <WhatIBuild />
         <Personal />
       </main>
