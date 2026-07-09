@@ -1107,7 +1107,7 @@ function Footer() {
             Kay Gijzen
           </p>
           <p className="text-sm" style={{ color: '#56564F', fontFamily: 'Inter, sans-serif' }}>
-            AI Engineer · Leiden, NL
+            AI Engineer · Sogeti · Leiden, NL
           </p>
         </div>
 
