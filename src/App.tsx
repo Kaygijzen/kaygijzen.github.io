@@ -115,6 +115,7 @@ const navLinks = [
   // { href: '#identity', label: 'K · A · Y', short: 'K · A · Y', icon: null },
   // { href: '#palette', label: 'Colors', short: 'Colors', icon: null },
   { href: '#whatIBuild', label: 'What I Build.', short: 'What I Build.', icon: null },
+  { href: '#timeline', label: 'Career Timeline.', short: 'Career Timeline.', icon: null },
   { href: '#outsideWork', label: 'Outside Work.', short: 'Outside Work.', icon: null },
 ]
 
@@ -651,7 +652,7 @@ function WhatIBuild() {
   const reduced = useReducedMotion()
 
   return (
-    <section id="whatIBuild" className="py-20 px-6 bg-white">
+    <section id="whatIBuild" className="py-20 pb-6 px-6 bg-white">
       <div className="max-w-5xl mx-auto">
         <FadeUp className="text-center mb-6">
           <h2
@@ -735,6 +736,196 @@ function WhatIBuild() {
         </StaggerGrid>
 
         <ToolkitCarousel />
+      </div>
+    </section>
+  )
+}
+
+// ─── Career Timeline ───────────────────────────────────────────────────────────
+
+type TimelineMilestone = {
+  id: string
+  org: string
+  role: string
+  dateRange: string
+  type: 'education' | 'work'
+  current?: boolean
+}
+
+const timelineMilestones: TimelineMilestone[] = [
+  { id: 'propaz', org: 'Prop-AZ', role: 'Mobile App Developer', dateRange: 'Feb 2020 – Jun 2021', type: 'work' },
+  { id: 'zuyd', org: 'Zuyd University', role: 'HBO-ICT', dateRange: 'Graduated 2022', type: 'education' },
+  { id: 'b00', org: 'B00', role: 'Software Engineer', dateRange: 'Feb 2022 – Mar 2025', type: 'work' },
+  { id: 'tno', org: 'TNO', role: 'AI Researcher', dateRange: 'Apr 2025 – Oct 2025', type: 'work' },
+  { id: 'leiden', org: 'Leiden University', role: 'MSc Computer Science', dateRange: 'Graduated 2025', type: 'education' },
+  { id: 'b00', org: 'B00', role: 'Software Engineer', dateRange: 'Jan 2026 – Mar 2026', type: 'work' },
+  { id: 'sogeti', org: 'Sogeti', role: 'AI Engineer', dateRange: 'Apr 2026 – Present', type: 'work', current: true },
+]
+
+function TimelineNode({ milestone, size = 16 }: { milestone: TimelineMilestone; size?: number }) {
+  const isEducation = milestone.type === 'education'
+  const ringSize = size + 8
+
+  return (
+    <div className="relative flex items-center justify-center flex-shrink-0" style={{ width: ringSize, height: ringSize }}>
+      {milestone.current && (
+        <span
+          aria-hidden
+          className="timeline-pulse-ring absolute"
+          style={{ width: ringSize, height: ringSize, borderRadius: '50%', border: '2px solid #185FA5' }}
+        />
+      )}
+      <span
+        style={{
+          width: size,
+          height: size,
+          borderRadius: '50%',
+          background: isEducation ? '#F8F8F7' : '#185FA5',
+          border: '2.5px solid #185FA5',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      />
+    </div>
+  )
+}
+
+function TimelineEntryText({ milestone, align = 'center' }: { milestone: TimelineMilestone; align?: 'center' | 'left' }) {
+  return (
+    <div style={{ maxWidth: 150, textAlign: align }}>
+      <p
+        className="leading-tight"
+        style={{ fontFamily: '"Space Grotesk", sans-serif', color: '#161610', fontWeight: 700, fontSize: '0.8rem' }}
+      >
+        {milestone.org}
+      </p>
+      <p className="leading-snug mt-0.5" style={{ fontFamily: 'Inter, sans-serif', color: '#56564F', fontSize: '0.68rem' }}>
+        {milestone.role}
+      </p>
+      <p className="leading-snug" style={{ fontFamily: 'Inter, sans-serif', color: '#A8A8A3', fontSize: '0.64rem' }}>
+        {milestone.dateRange}
+      </p>
+    </div>
+  )
+}
+
+function CareerTimelineHorizontal() {
+  return (
+    <div className="hidden md:block" style={{ paddingRight: 30 }}>
+      <div className="relative">
+        {/* Gradient path + forward arrowhead */}
+        <div
+          aria-hidden
+          className="absolute top-1/2 left-0 -translate-y-1/2"
+          style={{ right: 30, height: 3, background: 'linear-gradient(90deg, #185FA5 0%, #0F6E56 100%)', borderRadius: 2 }}
+        />
+        <div
+          aria-hidden
+          className="absolute top-1/2 -translate-y-1/2"
+          style={{
+            right: 0,
+            width: 0,
+            height: 0,
+            borderTop: '7px solid transparent',
+            borderBottom: '7px solid transparent',
+            borderLeft: '13px solid #0F6E56',
+          }}
+        />
+
+        <div className="relative flex justify-between items-stretch">
+          {timelineMilestones.map((milestone, i) => {
+            const labelAbove = i % 2 === 0
+
+            return (
+              <div key={milestone.id} className="flex flex-col items-center" style={{ flex: '0 0 auto' }}>
+                {/* Above slot — either this milestone's label, or the branch offshoot */}
+                <div className="flex flex-col items-center justify-end" style={{ height: 92, marginBottom: 10 }}>
+                  {labelAbove && <TimelineEntryText milestone={milestone} />}
+                </div>
+
+                <TimelineNode milestone={milestone} />
+
+                {/* Below slot */}
+                <div className="flex flex-col items-center justify-start" style={{ height: 92, marginTop: 10 }}>
+                  {!labelAbove && <TimelineEntryText milestone={milestone} />}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function CareerTimelineVertical() {
+  return (
+    <div className="md:hidden relative" style={{ paddingBottom: 32, paddingLeft: 6 }}>
+      {/* Gradient path + forward arrowhead */}
+      <div
+        aria-hidden
+        className="absolute top-0"
+        style={{ left: 15, bottom: 26, width: 3, background: 'linear-gradient(180deg, #185FA5 0%, #0F6E56 100%)', borderRadius: 2 }}
+      />
+      <div
+        aria-hidden
+        className="absolute"
+        style={{
+          left: 10,
+          bottom: 0,
+          width: 0,
+          height: 0,
+          borderLeft: '7px solid transparent',
+          borderRight: '7px solid transparent',
+          borderTop: '13px solid #0F6E56',
+        }}
+      />
+
+      <div className="relative flex flex-col">
+        {timelineMilestones.map((milestone, i) => {
+          return (
+            <div key={milestone.id} style={{ marginBottom: i === timelineMilestones.length - 1 ? 0 : 34 }}>
+              <div className="flex items-start gap-4">
+                <TimelineNode milestone={milestone} />
+                <div className="pt-0.5">
+                  <TimelineEntryText milestone={milestone} align="left" />
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function CareerTimeline() {
+  return (
+    <section id="timeline" className="py-20  px-6 pb-14 bg-white">
+      <div className="max-w-5xl mx-auto">
+        <FadeUp className="text-center mb-6">
+          <h2
+            className="text-3xl md:text-4xl font-bold"
+            style={{ fontFamily: '"Space Grotesk", sans-serif', color: '#161610', letterSpacing: '-0.02em' }}
+          >
+            Career Timeline.
+          </h2>
+        </FadeUp>
+
+        <FadeUp delay={0.1} className="text-center mb-10">
+          <p
+            className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
+            style={{ color: '#56564F', fontFamily: 'Inter, sans-serif' }}
+          >
+            From full-stack software development to AI engineering, building expertise across the software and AI lifecycle.
+          </p>
+        </FadeUp>
+
+        <FadeUp delay={0.15}>
+          <CareerTimelineHorizontal />
+          <CareerTimelineVertical />
+          {/* <TimelineLegend /> */}
+        </FadeUp>
       </div>
     </section>
   )
@@ -973,6 +1164,7 @@ export default function App() {
       <main>
         <Hero />
         <WhatIBuild />
+        <CareerTimeline />
         <Personal />
       </main>
       <Footer />

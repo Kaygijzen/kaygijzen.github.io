@@ -25,3 +25,30 @@
     width: 100%;
   }
 }
+
+/* Career timeline — pulsing "current role" ring. Static (no animation)
+   by default; only animates for users who haven't asked for reduced motion. */
+.timeline-pulse-ring {
+  animation: none;
+}
+
+@keyframes timeline-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .timeline-pulse-ring {
+    animation: timeline-pulse 2.4s ease-out infinite;
+  }
+}
