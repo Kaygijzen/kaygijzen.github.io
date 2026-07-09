@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ComponentType, type ReactNode } from 'react'
 import {
   motion,
   useScroll,
@@ -7,9 +7,22 @@ import {
   useReducedMotion,
   type PanInfo,
 } from 'framer-motion'
-import { Code2, Bot, Mail, ArrowDown, House, ChevronLeft, ChevronRight, Brain, Network } from 'lucide-react'
-import type { IconType } from 'react-icons'
-import { SiPython, SiPytorch, SiLangchain, SiDatabricks, SiMlflow, SiDocker, SiFastapi, SiReact, SiPostgresql, SiGithub } from 'react-icons/si'
+import { Code2, Bot, Mail, ArrowDown, House, ChevronLeft, ChevronRight, Brain, Network, Database, Cloud } from 'lucide-react'
+import {
+  SiPython,
+  SiGo,
+  SiPytorch,
+  SiLangchain,
+  SiDjango,
+  SiFastapi,
+  SiReact,
+  SiDatabricks,
+  SiMlflow,
+  SiApachespark,
+  SiDocker,
+  SiLinux,
+  SiGithub,
+} from 'react-icons/si'
 
 // ─── Animation primitives ─────────────────────────────────────────────────────
 
@@ -483,28 +496,73 @@ const buildItems = [
   },
 ]
 
-const TOOLKIT_ITEMS: { icon: IconType; label: string }[] = [
+// Most carousel icons are brand marks from react-icons/si, but a couple
+// (SQL, MS Azure) fall back to plain lucide-react icons where no
+// vendor-neutral or unrestricted brand logo is available — this type covers
+// components from either library.
+type CarouselIcon = ComponentType<{ size?: number; color?: string }>
+
+const TOOLKIT_ITEMS: { icon: CarouselIcon; label: string }[] = [
   { icon: SiPython, label: 'Python' },
+  { icon: SiGo, label: 'Go' },
+  { icon: SiPytorch, label: 'PyTorch' },
   { icon: SiLangchain, label: 'LangChain' },
   { icon: SiDatabricks, label: 'Databricks' },
   { icon: SiMlflow, label: 'MLflow' },
-  { icon: SiDocker, label: 'Docker' },
+  { icon: SiApachespark, label: 'Apache Spark' },
+  { icon: SiDjango, label: 'Django' },
   { icon: SiFastapi, label: 'FastAPI' },
-  { icon: SiPytorch, label: 'PyTorch' },
   { icon: SiReact, label: 'React' },
-  { icon: SiPostgresql, label: 'PostgreSQL' },
+  { icon: Database, label: 'SQL' },
+  { icon: SiDocker, label: 'Docker' },
+  { icon: Cloud, label: 'MS Azure' },
+  { icon: SiLinux, label: 'Linux' },
 ]
 
 const TOOLKIT_GAP = 12
 
+// How many items are cloned onto each end of the track to fake an infinite
+// loop. Needs to cover both the widest possible half-viewport (~4 cards on
+// each side at the max container width) AND a burst of rapid arrow clicks —
+// each click retargets the in-flight spring before it settles, so `current`
+// can walk several cards past the real loop boundary before the loop-reset
+// in onAnimationComplete ever gets a chance to fire. A generous buffer means
+// current can never walk past the end of the array before that reset runs,
+// even under ~20-30 rapid clicks.
+const TOOLKIT_CLONES = 25
+const TOOLKIT_AUTO_ADVANCE_MS = 3000
+const TOOLKIT_RESUME_DELAY_MS = 2000
+// How many seconds of released velocity get projected forward when deciding
+// how many cards a flick should carry through — bigger flicks skip further.
+const TOOLKIT_VELOCITY_PROJECTION = 0.2
+const TOOLKIT_MAX_FLICK_STEPS = 3
+
 function ToolkitCarousel() {
-  const [current, setCurrent] = useState(0)
+  const n = TOOLKIT_ITEMS.length
+  const loopItems = useMemo(() => {
+    // Build the clone buffers cyclically rather than with a single slice —
+    // TOOLKIT_CLONES can be larger than the real item count, in which case
+    // a plain slice would silently clamp instead of wrapping around.
+    const leading = Array.from(
+      { length: TOOLKIT_CLONES },
+      (_, i) => TOOLKIT_ITEMS[(((n - TOOLKIT_CLONES + i) % n) + n) % n]
+    )
+    const trailing = Array.from({ length: TOOLKIT_CLONES }, (_, i) => TOOLKIT_ITEMS[i % n])
+    return [...leading, ...TOOLKIT_ITEMS, ...trailing]
+  }, [n])
+  const loopLength = loopItems.length
+
+  // `current` indexes into `loopItems`; TOOLKIT_CLONES is real index 0.
+  const [current, setCurrent] = useState(TOOLKIT_CLONES)
+  const [instant, setInstant] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [resumeDelay, setResumeDelay] = useState(false)
   const [containerW, setContainerW] = useState(() =>
     typeof window !== 'undefined' ? Math.min(window.innerWidth, 1040) : 800
   )
   const containerRef = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
-  const n = TOOLKIT_ITEMS.length
 
   const cardW = containerW < 640 ? Math.floor(containerW / 3.2) : 120
 
@@ -520,15 +578,74 @@ function ToolkitCarousel() {
 
   const trackX = containerW / 2 - cardW / 2 - current * (cardW + TOOLKIT_GAP)
   const maxX = containerW / 2 - cardW / 2
-  const minX = maxX - (n - 1) * (cardW + TOOLKIT_GAP)
+  const minX = maxX - (loopLength - 1) * (cardW + TOOLKIT_GAP)
 
-  const prev = () => setCurrent((c) => Math.max(c - 1, 0))
-  const next = () => setCurrent((c) => Math.min(c + 1, n - 1))
+  const prev = () => {
+    setInstant(false)
+    setCurrent((c) => c - 1)
+  }
+  const next = () => {
+    setInstant(false)
+    setCurrent((c) => c + 1)
+  }
+
+  // Once the spring settles on a cloned card at either end, silently rebase
+  // — no transition — to the equivalent position in the real, middle copy.
+  // The clone renders identically to the real card, so the jump is invisible.
+  // Uses a full modulo correction (not a single ± n) because a burst of
+  // rapid clicks can retarget the in-flight animation many times before it
+  // ever settles, so `current` may have drifted several loop-lengths past
+  // the boundary by the time this finally runs — one ± n step wouldn't be
+  // enough to land it back in the safe zone.
+  const handleTrackAnimationComplete = () => {
+    if (current < TOOLKIT_CLONES || current >= TOOLKIT_CLONES + n) {
+      const realIndex = (((current - TOOLKIT_CLONES) % n) + n) % n
+      setInstant(true)
+      setCurrent(TOOLKIT_CLONES + realIndex)
+    }
+  }
 
   const handleDragEnd = (_: PointerEvent, info: PanInfo) => {
-    if (info.offset.x < -50 || info.velocity.x < -300) next()
-    else if (info.offset.x > 50 || info.velocity.x > 300) prev()
+    setIsDragging(false)
+    // Project the release velocity forward on top of how far they already
+    // dragged, so a fast short flick can carry through multiple cards while
+    // a slow deliberate drag still just nudges one card at a time.
+    const step = cardW + TOOLKIT_GAP
+    const projected = info.offset.x + info.velocity.x * TOOLKIT_VELOCITY_PROJECTION
+    const steps = Math.max(
+      -TOOLKIT_MAX_FLICK_STEPS,
+      Math.min(TOOLKIT_MAX_FLICK_STEPS, Math.round(-projected / step))
+    )
+    if (steps !== 0) {
+      setInstant(false)
+      setCurrent((c) => c + steps)
+    }
   }
+
+  // Pause while hovering/dragging; resume a couple of seconds after both stop.
+  useEffect(() => {
+    if (isHovering || isDragging) {
+      setResumeDelay(true)
+      return
+    }
+    const t = setTimeout(() => setResumeDelay(false), TOOLKIT_RESUME_DELAY_MS)
+    return () => clearTimeout(t)
+  }, [isHovering, isDragging])
+
+  const autoAdvancePaused = reduced || isHovering || isDragging || resumeDelay
+
+  useEffect(() => {
+    if (autoAdvancePaused) return
+    const id = setInterval(() => {
+      setInstant(false)
+      setCurrent((c) => c + 1)
+    }, TOOLKIT_AUTO_ADVANCE_MS)
+    return () => clearInterval(id)
+  }, [autoAdvancePaused])
+
+  const trackTransition = reduced || instant
+    ? { duration: 0 }
+    : { type: 'spring' as const, stiffness: 170, damping: 40, mass: 1 }
 
   return (
     <FadeUp delay={0.2} className="mt-20">
@@ -539,109 +656,93 @@ function ToolkitCarousel() {
         Toolkit
       </p>
 
-      <div ref={containerRef} className="relative">
-        <button
-          onClick={prev}
-          disabled={current === 0}
-          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full transition-opacity disabled:opacity-25"
-          style={{ background: 'rgba(255,255,255,0.9)', boxShadow: '0 2px 12px rgba(0,0,0,0.08)', border: '1px solid #E2E2DF' }}
-          aria-label="Previous tool"
-        >
-          <ChevronLeft size={16} color="#3D3D37" />
-        </button>
-        <button
-          onClick={next}
-          disabled={current === n - 1}
-          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full transition-opacity disabled:opacity-25"
-          style={{ background: 'rgba(255,255,255,0.9)', boxShadow: '0 2px 12px rgba(0,0,0,0.08)', border: '1px solid #E2E2DF' }}
-          aria-label="Next tool"
-        >
-          <ChevronRight size={16} color="#3D3D37" />
-        </button>
-
-        <div className="overflow-hidden">
-          <motion.div
-            className="flex select-none"
-            style={{ gap: TOOLKIT_GAP }}
-            animate={{ x: trackX }}
-            transition={
-              reduced
-                ? { duration: 0 }
-                : { type: 'spring', stiffness: 280, damping: 32, mass: 0.8 }
-            }
-            drag="x"
-            dragConstraints={{ left: minX, right: maxX }}
-            dragElastic={0.12}
-            dragMomentum={false}
-            onDragEnd={handleDragEnd}
+      <div
+        className="relative"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
+        {/* Card row — arrows anchor to this wrapper only, so they center
+            against the cards regardless of what renders below them. */}
+        <div ref={containerRef} className="relative">
+          <button
+            onClick={prev}
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full transition-opacity"
+            style={{ background: 'rgba(255,255,255,0.9)', boxShadow: '0 2px 12px rgba(0,0,0,0.08)', border: '1px solid #E2E2DF' }}
+            aria-label="Previous tool"
           >
-            {TOOLKIT_ITEMS.map((item, i) => {
-              const dist = Math.abs(i - current)
-              const isActive = dist === 0
-              const IconComp = item.icon
-              return (
-                <motion.div
-                  key={item.label}
-                  style={{ width: cardW, flexShrink: 0 }}
-                  animate={{
-                    scale: isActive ? 1 : dist === 1 ? 0.9 : 0.82,
-                    opacity: isActive ? 1 : dist === 1 ? 0.55 : 0.3,
-                  }}
-                  transition={
-                    reduced
-                      ? { duration: 0 }
-                      : { type: 'spring', stiffness: 280, damping: 32 }
-                  }
-                >
-                  <div
-                    className="rounded-2xl flex flex-col items-center justify-center gap-2"
-                    style={{
-                      width: cardW,
-                      height: cardW,
-                      background: '#FAFAF9',
-                      border: '1px solid #E8E8E4',
+            <ChevronLeft size={16} color="#3D3D37" />
+          </button>
+          <button
+            onClick={next}
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full transition-opacity"
+            style={{ background: 'rgba(255,255,255,0.9)', boxShadow: '0 2px 12px rgba(0,0,0,0.08)', border: '1px solid #E2E2DF' }}
+            aria-label="Next tool"
+          >
+            <ChevronRight size={16} color="#3D3D37" />
+          </button>
+
+          <div className="overflow-hidden">
+            <motion.div
+              className="flex select-none"
+              style={{ gap: TOOLKIT_GAP }}
+              animate={{ x: trackX }}
+              transition={trackTransition}
+              onAnimationComplete={handleTrackAnimationComplete}
+              drag="x"
+              dragConstraints={{ left: minX, right: maxX }}
+              dragElastic={1}
+              dragMomentum={false}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={handleDragEnd}
+            >
+              {loopItems.map((item, i) => {
+                const dist = Math.abs(i - current)
+                const isActive = dist === 0
+                const IconComp = item.icon
+                return (
+                  <motion.div
+                    key={`${item.label}-${i}`}
+                    style={{ width: cardW, flexShrink: 0 }}
+                    animate={{
+                      scale: isActive ? 1 : dist === 1 ? 0.9 : 0.82,
+                      opacity: isActive ? 1 : dist === 1 ? 0.55 : 0.3,
                     }}
+                    transition={
+                      reduced
+                        ? { duration: 0 }
+                        : { type: 'spring', stiffness: 280, damping: 32 }
+                    }
                   >
-                    <IconComp
-                      size={Math.floor(cardW * 0.34)}
-                      color={isActive ? '#185FA5' : '#6B6B65'}
-                    />
-                    <p
-                      className="text-xs font-medium"
+                    <div
+                      className="rounded-2xl flex flex-col items-center justify-center gap-2"
                       style={{
-                        fontFamily: '"Space Grotesk", sans-serif',
-                        color: isActive ? '#185FA5' : '#7A7A75',
-                        letterSpacing: '0.02em',
-                        fontSize: Math.max(9, Math.floor(cardW * 0.11)) + 'px',
+                        width: cardW,
+                        height: cardW,
+                        background: '#FAFAF9',
+                        border: '1px solid #E8E8E4',
                       }}
                     >
-                      {item.label}
-                    </p>
-                  </div>
-                </motion.div>
-              )
-            })}
-          </motion.div>
-        </div>
-
-        <div className="flex justify-center items-center gap-1 mt-6">
-          {TOOLKIT_ITEMS.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              aria-label={`Go to ${TOOLKIT_ITEMS[i].label}`}
-              style={{ padding: '5px 4px', background: 'none', border: 'none', cursor: 'pointer' }}
-            >
-              <motion.div
-                animate={{
-                  width: i === current ? 16 : 6,
-                  background: i === current ? '#185FA5' : '#CBCBC7',
-                }}
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                style={{ height: 6, borderRadius: 3 }}
-              />
-            </button>
-          ))}
+                      <IconComp
+                        size={Math.floor(cardW * 0.34)}
+                        color={isActive ? '#185FA5' : '#6B6B65'}
+                      />
+                      <p
+                        className="text-xs font-medium"
+                        style={{
+                          fontFamily: '"Space Grotesk", sans-serif',
+                          color: isActive ? '#185FA5' : '#7A7A75',
+                          letterSpacing: '0.02em',
+                          fontSize: Math.max(9, Math.floor(cardW * 0.11)) + 'px',
+                        }}
+                      >
+                        {item.label}
+                      </p>
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </motion.div>
+          </div>
         </div>
       </div>
     </FadeUp>
