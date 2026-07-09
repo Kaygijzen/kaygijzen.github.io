@@ -1,3 +1,4 @@
+import { ThemeProvider } from '../components/ui/ThemeProvider'
 import { ScrollProgress } from '../components/ui/ScrollProgress'
 import { Nav } from '../components/ui/Nav'
 import { Hero } from '../components/sections/Hero'
@@ -8,7 +9,7 @@ import { Footer } from '../components/sections/Footer'
 
 export default function Home() {
   return (
-    <>
+    <ThemeProvider>
       <ScrollProgress />
       <Nav />
       <main>
@@ -18,6 +19,6 @@ export default function Home() {
         <Personal />
       </main>
       <Footer />
-    </>
+    </ThemeProvider>
   )
 }

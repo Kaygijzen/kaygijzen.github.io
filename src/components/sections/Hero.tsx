@@ -18,7 +18,7 @@ function PortraitPhoto() {
       style={{ maxWidth: '460px' }}
     >
       <div
-        className="border-brand-blue-border bg-brand-blue-tint"
+        className="border-brand-blue-border bg-brand-blue-tint dark:border-brand-blue-border-dark dark:bg-brand-blue-tint-dark"
         style={{
           aspectRatio: '1',
           borderRadius: '62% 38% 46% 54% / 56% 44% 56% 44%',
@@ -44,17 +44,11 @@ function PortraitPhoto() {
           />
         ) : (
           <div
-            style={{
-              width: '100%',
-              height: '100%',
-              background: 'linear-gradient(145deg, #E6F1FB 0%, #C8DFFB 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            className="bg-gradient-to-br from-brand-blue-tint to-[#C8DFFB] dark:from-brand-blue-tint-dark dark:to-[#1A3A5C] flex items-center justify-center"
+            style={{ width: '100%', height: '100%' }}
           >
             <span
-              className="text-brand-blue-border"
+              className="text-brand-blue-border dark:text-brand-blue-border-dark"
               style={{
                 fontFamily: '"Space Grotesk", sans-serif',
                 fontWeight: 700,
@@ -98,8 +92,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20 overflow-hidden"
-      style={{ background: '#F8F8F7' }}
+      className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20 overflow-hidden bg-gray-50 dark:bg-gray-900"
     >
       {/* Ambient blobs — hidden on mobile (perf), visible sm+ */}
       <div
@@ -177,10 +170,9 @@ export function Hero() {
         <div className="order-2 md:order-1 flex flex-col items-center md:items-start">
           {/* Name */}
           <motion.h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-center md:text-left leading-tight mb-3"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-center md:text-left leading-tight mb-3 text-gray-900 dark:text-gray-50"
             style={{
               fontFamily: '"Space Grotesk", sans-serif',
-              color: '#161610',
               letterSpacing: '-0.03em',
             }}
             initial={reduced ? false : { opacity: 0, y: 24 }}
@@ -192,9 +184,8 @@ export function Hero() {
 
           {/* Role */}
           <motion.p
-            className="text-center md:text-left mb-6"
+            className="text-center md:text-left mb-6 text-gray-500 dark:text-gray-400"
             style={{
-              color: '#7A7A75',
               fontFamily: '"Space Grotesk", sans-serif',
               letterSpacing: '0.15em',
               textTransform: 'uppercase',
@@ -215,9 +206,8 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.5 }}
           >
             <p
-              className="text-base md:text-lg text-center md:text-left max-w-sm"
+              className="text-base md:text-lg text-center md:text-left max-w-sm text-gray-600 dark:text-gray-300"
               style={{
-                color: '#56564F',
                 fontFamily: 'Inter, sans-serif',
                 opacity: tagVisible ? 1 : 0,
                 transition: 'opacity 0.32s ease',
@@ -242,8 +232,7 @@ export function Hero() {
       {/* Scroll cue */}
       <motion.a
         href="#identity"
-        className="absolute bottom-10 flex flex-col items-center gap-2"
-        style={{ color: '#A8A8A3', textDecoration: 'none' }}
+        className="absolute bottom-10 flex flex-col items-center gap-2 no-underline text-gray-400 dark:text-gray-500"
         initial={reduced ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.9 }}

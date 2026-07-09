@@ -73,14 +73,13 @@ function BentoCard({
 
 export function Personal() {
   return (
-    <section id="outsideWork" className="py-20 px-6" style={{ background: '#F8F8F7' }}>
+    <section id="outsideWork" className="py-20 px-6 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-5xl mx-auto">
         <FadeUp className="text-center mb-6">
           <h2
-            className="text-3xl md:text-4xl font-bold"
+            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50"
             style={{
               fontFamily: '"Space Grotesk", sans-serif',
-              color: '#161610',
               letterSpacing: '-0.02em',
             }}
           >
@@ -90,8 +89,8 @@ export function Personal() {
 
         <FadeUp delay={0.1} className="text-center mb-10">
           <p
-            className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
-            style={{ color: '#56564F', fontFamily: 'Inter, sans-serif' }}
+            className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed text-gray-600 dark:text-gray-300"
+            style={{ fontFamily: 'Inter, sans-serif' }}
           >
             {
               "While I get a lot of energy from my work, these are the places, passions, and side quests that fill the hours beyond it. Because there's more to life than stand-ups and deployment pipelines."

@@ -3,7 +3,7 @@ import type { ComponentType } from 'react'
 // Shared icon type: covers both react-icons (plain function components) and
 // lucide-react (forwardRef components) — every icon used across the site's
 // content data satisfies this shape.
-export type IconComponent = ComponentType<{ size?: number; color?: string }>
+export type IconComponent = ComponentType<{ size?: number; color?: string; className?: string }>
 
 export interface ContactInfo {
   name: string

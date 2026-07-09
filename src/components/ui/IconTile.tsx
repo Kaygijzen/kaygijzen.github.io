@@ -12,22 +12,23 @@ export function IconTile({
   size: number
   isActive: boolean
 }) {
+  const tone = isActive
+    ? 'text-brand-blue dark:text-brand-blue-dark-text'
+    : 'text-gray-500 dark:text-gray-300'
+
   return (
     <div
-      className="rounded-2xl flex flex-col items-center justify-center gap-2"
-      style={{
-        width: size,
-        height: size,
-        background: '#FAFAF9',
-        border: '1px solid #E8E8E4',
-      }}
+      // Card surface is deliberately a step lighter than the section's own
+      // dark background (gray-800) — otherwise the tiles have no visible
+      // border/fill against it and disappear in dark mode.
+      className="rounded-2xl flex flex-col items-center justify-center gap-2 bg-gray-50 border border-gray-200 dark:bg-gray-700 dark:border-gray-600"
+      style={{ width: size, height: size }}
     >
-      <Icon size={Math.floor(size * 0.34)} color={isActive ? '#185FA5' : '#6B6B65'} />
+      <Icon size={Math.floor(size * 0.34)} className={tone} />
       <p
-        className="text-xs font-medium"
+        className={`text-xs font-medium ${tone}`}
         style={{
           fontFamily: '"Space Grotesk", sans-serif',
-          color: isActive ? '#185FA5' : '#7A7A75',
           letterSpacing: '0.02em',
           fontSize: Math.max(9, Math.floor(size * 0.11)) + 'px',
         }}

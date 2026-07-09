@@ -14,22 +14,24 @@ function TimelineNode({ milestone, size = 16 }: { milestone: TimelineMilestone; 
       {milestone.current && (
         <span
           aria-hidden
-          className="timeline-pulse-ring absolute"
+          className="timeline-pulse-ring absolute border-brand-blue"
           style={{
             width: ringSize,
             height: ringSize,
             borderRadius: '50%',
-            border: '2px solid #185FA5',
+            borderWidth: 2,
+            borderStyle: 'solid',
           }}
         />
       )}
       <span
+        className={`border-brand-blue ${isEducation ? 'bg-white dark:bg-gray-800' : 'bg-brand-blue'}`}
         style={{
           width: size,
           height: size,
           borderRadius: '50%',
-          background: isEducation ? '#F8F8F7' : '#185FA5',
-          border: '2.5px solid #185FA5',
+          borderWidth: '2.5px',
+          borderStyle: 'solid',
           position: 'relative',
           zIndex: 1,
         }}
@@ -48,10 +50,9 @@ function TimelineEntryText({
   return (
     <div style={{ maxWidth: 150, textAlign: align }}>
       <p
-        className="leading-tight"
+        className="leading-tight text-gray-900 dark:text-gray-50"
         style={{
           fontFamily: '"Space Grotesk", sans-serif',
-          color: '#161610',
           fontWeight: 700,
           fontSize: '0.8rem',
         }}
@@ -59,14 +60,14 @@ function TimelineEntryText({
         {milestone.org}
       </p>
       <p
-        className="leading-snug mt-0.5"
-        style={{ fontFamily: 'Inter, sans-serif', color: '#56564F', fontSize: '0.68rem' }}
+        className="leading-snug mt-0.5 text-gray-600 dark:text-gray-300"
+        style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.68rem' }}
       >
         {milestone.role}
       </p>
       <p
-        className="leading-snug"
-        style={{ fontFamily: 'Inter, sans-serif', color: '#A8A8A3', fontSize: '0.64rem' }}
+        className="leading-snug text-gray-400 dark:text-gray-500"
+        style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.64rem' }}
       >
         {milestone.dateRange}
       </p>
@@ -199,14 +200,13 @@ function CareerTimelineVertical() {
 
 export function CareerTimeline() {
   return (
-    <section id="timeline" className="py-20  px-6 pb-14 bg-white">
+    <section id="timeline" className="py-20  px-6 pb-14 bg-white dark:bg-gray-800">
       <div className="max-w-5xl mx-auto">
         <FadeUp className="text-center mb-6">
           <h2
-            className="text-3xl md:text-4xl font-bold"
+            className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50"
             style={{
               fontFamily: '"Space Grotesk", sans-serif',
-              color: '#161610',
               letterSpacing: '-0.02em',
             }}
           >
@@ -216,8 +216,8 @@ export function CareerTimeline() {
 
         <FadeUp delay={0.1} className="text-center mb-10">
           <p
-            className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
-            style={{ color: '#56564F', fontFamily: 'Inter, sans-serif' }}
+            className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed text-gray-600 dark:text-gray-300"
+            style={{ fontFamily: 'Inter, sans-serif' }}
           >
             From full-stack software development to AI engineering, building expertise across the
             software and AI lifecycle.

@@ -60,27 +60,19 @@ export function Carousel<T>({
       <div ref={containerRef} className="relative">
         <button
           onClick={prev}
-          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full transition-opacity"
-          style={{
-            background: 'rgba(255,255,255,0.9)',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-            border: '1px solid #E2E2DF',
-          }}
+          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full transition-opacity border border-gray-200 dark:border-gray-600 bg-white/90 dark:bg-gray-700/90 text-gray-700 dark:text-gray-300"
+          style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}
           aria-label={prevLabel}
         >
-          <ChevronLeft size={16} color="#3D3D37" />
+          <ChevronLeft size={16} />
         </button>
         <button
           onClick={next}
-          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full transition-opacity"
-          style={{
-            background: 'rgba(255,255,255,0.9)',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-            border: '1px solid #E2E2DF',
-          }}
+          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full transition-opacity border border-gray-200 dark:border-gray-600 bg-white/90 dark:bg-gray-700/90 text-gray-700 dark:text-gray-300"
+          style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}
           aria-label={nextLabel}
         >
-          <ChevronRight size={16} color="#3D3D37" />
+          <ChevronRight size={16} />
         </button>
 
         <div className="overflow-hidden">

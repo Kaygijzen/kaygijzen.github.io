@@ -25,8 +25,8 @@ export function ToolkitCarousel() {
   return (
     <FadeUp delay={0.2} className="mt-20">
       <p
-        className="text-xs tracking-widest uppercase text-center mb-7"
-        style={{ color: '#A8A8A3', fontFamily: '"Space Grotesk", sans-serif' }}
+        className="text-xs tracking-widest uppercase text-center mb-7 text-gray-400 dark:text-gray-400"
+        style={{ fontFamily: '"Space Grotesk", sans-serif' }}
       >
         Toolkit
       </p>

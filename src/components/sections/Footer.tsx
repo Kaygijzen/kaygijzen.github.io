@@ -29,7 +29,7 @@ export function Footer() {
           >
             {CONTACT.name}
           </p>
-          <p className="text-sm" style={{ color: '#56564F', fontFamily: 'Inter, sans-serif' }}>
+          <p className="text-sm" style={{ color: '#A8A8A3', fontFamily: 'Inter, sans-serif' }}>
             {CONTACT.role}
           </p>
         </div>
@@ -38,7 +38,7 @@ export function Footer() {
           <ContactButtons variant="dark" />
         </div>
 
-        <p className="text-xs" style={{ color: '#3D3D37', fontFamily: 'Inter, sans-serif' }}>
+        <p className="text-xs" style={{ color: '#A8A8A3', fontFamily: 'Inter, sans-serif' }}>
           © {new Date().getFullYear()} {CONTACT.name}
         </p>
       </FadeUp>

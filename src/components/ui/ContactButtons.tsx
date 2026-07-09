@@ -1,6 +1,7 @@
-import { Mail } from 'lucide-react'
+import { Mail, Moon, Sun } from 'lucide-react'
 import { SiGithub } from 'react-icons/si'
 import { CONTACT } from '../../data/contact'
+import { useTheme } from '../../hooks/useTheme'
 import { ContactButton } from './ContactButton'
 
 const LinkedInIcon = (
@@ -11,43 +12,34 @@ const LinkedInIcon = (
 
 type ContactButtonsVariant = 'light' | 'dark'
 
-// Hero sits on the light hero background; Footer sits on the dark footer
-// background — each needs its own base/hover palette to read correctly.
-const VARIANT_STYLES: Record<
+// Hero sits on the toggleable page background (light or dark); Footer
+// always sits on its own fixed dark background regardless of the site
+// theme, so it doesn't need dark: variants of its own.
+//
+// Hover fills for all four buttons live in index.css as `.hover-fill-*`
+// classes, scoped to `@media (hover: hover) and (pointer: fine)` — not as
+// Tailwind `hover:` utilities — so tapping on touch devices can never
+// leave a button stuck in its hover color.
+const VARIANT_CLASSES: Record<
   ContactButtonsVariant,
-  {
-    baseBorder: string
-    baseBg: string
-    baseColor: string
-    linkedinHover: string
-    githubHover: string
-    githubIconSize: number
-  }
+  { base: string; }
 > = {
   light: {
-    baseBorder: 'rgba(22,22,16,0.16)',
-    baseBg: 'rgba(22,22,16,0.05)',
-    baseColor: '#6B6B65',
-    linkedinHover: '#0A66C2',
-    githubHover: '#181717',
-    githubIconSize: 17,
+    base: 'border-black/[0.16] bg-black/[0.05] text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300',
   },
   dark: {
-    baseBorder: '#3D3D37',
-    baseBg: '#272721',
-    baseColor: '#E2E2DF',
-    linkedinHover: '#0A66C2',
-    githubHover: '#185FA5',
-    githubIconSize: 16,
+    base: 'border-gray-700 bg-gray-800 text-gray-200',
   },
 }
 
-// Email/LinkedIn/GitHub button trio shared by Hero and Footer. Renders no
-// wrapping element of its own — the caller supplies the layout wrapper
-// (Hero animates it in, Footer doesn't) — so it always slots in as three
-// sibling buttons.
+// Email/LinkedIn/GitHub/theme-toggle button row shared by Hero and Footer.
+// Renders no wrapping element of its own — the caller supplies the layout
+// wrapper (Hero animates it in, Footer doesn't) — so it always slots in as
+// four sibling buttons.
 export function ContactButtons({ variant }: { variant: ContactButtonsVariant }) {
-  const s = VARIANT_STYLES[variant]
+  const v = VARIANT_CLASSES[variant]
+  const { theme, toggleTheme } = useTheme()
+  const isDark = theme === 'dark'
 
   return (
     <>
@@ -55,33 +47,42 @@ export function ContactButtons({ variant }: { variant: ContactButtonsVariant }) 
         href={`mailto:${CONTACT.email}`}
         ariaLabel="Send email"
         icon={<Mail size={17} />}
-        baseBorder={s.baseBorder}
-        baseBg={s.baseBg}
-        baseColor={s.baseColor}
-        hoverBg="#185FA5"
-        hoverColor="#fff"
+        className={`${v.base} hover-fill-blue`}
       />
       <ContactButton
         href={CONTACT.linkedinUrl}
         external
         ariaLabel="LinkedIn profile"
         icon={LinkedInIcon}
-        baseBorder={s.baseBorder}
-        baseBg={s.baseBg}
-        baseColor={s.baseColor}
-        hoverBg={s.linkedinHover}
-        hoverColor="#fff"
+        className={`${v.base} hover-fill-blue`}
       />
       <ContactButton
         href={CONTACT.githubUrl}
         external
         ariaLabel="GitHub profile"
-        icon={<SiGithub size={s.githubIconSize} />}
-        baseBorder={s.baseBorder}
-        baseBg={s.baseBg}
-        baseColor={s.baseColor}
-        hoverBg={s.githubHover}
-        hoverColor="#fff"
+        icon={<SiGithub size={17} />}
+        className={`${v.base} hover-fill-blue`}
+      />
+      <ContactButton
+        onClick={toggleTheme}
+        ariaLabel={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+        className={`${v.base} hover-fill-blue`}
+        icon={
+          <span className="relative block w-4 h-4">
+            <Sun
+              size={16}
+              className={`absolute inset-0 transition-all duration-300 ${
+                isDark ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'
+              }`}
+            />
+            <Moon
+              size={16}
+              className={`absolute inset-0 transition-all duration-300 ${
+                isDark ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'
+              }`}
+            />
+          </span>
+        }
       />
     </>
   )
