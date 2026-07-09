@@ -12,3 +12,7 @@ export const taglines = [
   'Engineering clever systems that create impact, end-to-end.',
   'Combining AI and software engineering.',
 ]
+
+// This site's own repo — distinct from CONTACT.githubUrl, which points to
+// the GitHub profile in general.
+export const SITE_REPO_URL = 'https://github.com/kaygijzen/kaygijzen.github.io'

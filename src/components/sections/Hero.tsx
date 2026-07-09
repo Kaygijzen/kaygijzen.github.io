@@ -5,6 +5,18 @@ import { CONTACT, taglines } from '../../data/contact'
 import { ContactButtons } from '../ui/ContactButtons'
 import { EASE } from '../../lib/motion'
 
+// The source photo is a perfect square (1772×1772) and so is the circular
+// mask's aspect-ratio: 1 container — object-fit: cover has zero overflow to
+// crop in that case, which makes object-position a no-op no matter what
+// it's set to. To actually pan the crop we instead zoom in slightly (so
+// there's overflow to work with) and bias the zoom's anchor point toward
+// where we want to look. Tune PORTRAIT_FOCAL_POINT to re-aim it — 'X% Y%'
+// is the point in the *photo* that stays put as we zoom around it, so
+// higher X = more of the photo's right side shows, higher Y = lower in
+// the frame. Bump PORTRAIT_ZOOM up if you need more room to pan with.
+const PORTRAIT_ZOOM = 1.1
+const PORTRAIT_FOCAL_POINT = '10% 0%'
+
 function PortraitPhoto() {
   const [error, setError] = useState(false)
   const reduced = useReducedMotion()
@@ -37,7 +49,8 @@ function PortraitPhoto() {
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: 'center top',
+              transform: `scale(${PORTRAIT_ZOOM})`,
+              transformOrigin: PORTRAIT_FOCAL_POINT,
               display: 'block',
             }}
             onError={() => setError(true)}

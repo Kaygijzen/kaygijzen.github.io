@@ -1,4 +1,4 @@
-import { CONTACT } from '../../data/contact'
+import { CONTACT, SITE_REPO_URL } from '../../data/contact'
 import { ContactButtons } from '../ui/ContactButtons'
 import { FadeUp } from '../ui/ScrollReveal'
 
@@ -38,9 +38,20 @@ export function Footer() {
           <ContactButtons variant="dark" />
         </div>
 
-        <p className="text-xs" style={{ color: '#A8A8A3', fontFamily: 'Inter, sans-serif' }}>
-          © {new Date().getFullYear()} {CONTACT.name}
-        </p>
+        <div className="flex flex-col items-center gap-1.5">
+          <p className="text-xs" style={{ color: '#A8A8A3', fontFamily: 'Inter, sans-serif' }}>
+            © {new Date().getFullYear()} {CONTACT.name}
+          </p>
+          <a
+            href={SITE_REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs hover:underline"
+            style={{ color: '#7A7A75', fontFamily: 'Inter, sans-serif', textDecoration: 'none' }}
+          >
+            View source
+          </a>
+        </div>
       </FadeUp>
     </footer>
   )
