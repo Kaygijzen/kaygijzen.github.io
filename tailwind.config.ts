@@ -1,4 +1,5 @@
-/** @type {import('tailwindcss').Config} */
+import type { Config } from 'tailwindcss'
+
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
@@ -7,26 +8,26 @@ export default {
         dark: {
           500: '#111111',
         },
-        blue: {
-          base: '#185FA5',
+        'brand-blue': {
+          DEFAULT: '#185FA5',
           tint: '#E6F1FB',
           border: '#85B7EB',
           dark: '#042C53',
         },
-        teal: {
-          base: '#0F6E56',
+        'brand-teal': {
+          DEFAULT: '#0F6E56',
           tint: '#E1F5EE',
           border: '#5DCAA5',
           dark: '#04342C',
         },
-        amber: {
-          base: '#854F0B',
+        'brand-amber': {
+          DEFAULT: '#854F0B',
           tint: '#FAEEDA',
           border: '#EF9F27',
           dark: '#412402',
         },
-        coral: {
-          base: '#993C1D',
+        'brand-coral': {
+          DEFAULT: '#993C1D',
           tint: '#FAECE7',
           border: '#F0997B',
           dark: '#4A1B0C',
@@ -51,4 +52,4 @@ export default {
     },
   },
   plugins: [],
-}
+} satisfies Config
