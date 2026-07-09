@@ -128,7 +128,7 @@ const navLinks = [
   // { href: '#identity', label: 'K · A · Y', short: 'K · A · Y', icon: null },
   // { href: '#palette', label: 'Colors', short: 'Colors', icon: null },
   { href: '#whatIBuild', label: 'What I Build.', short: 'What I Build.', icon: null },
-  { href: '#timeline', label: 'Career Timeline.', short: 'Career Timeline.', icon: null },
+  { href: '#timeline', label: 'Career Timeline.', short: 'Career.', icon: null },
   { href: '#outsideWork', label: 'Outside Work.', short: 'Outside Work.', icon: null },
 ]
 
