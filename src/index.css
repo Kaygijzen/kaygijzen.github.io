@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 
@@ -14,15 +16,36 @@
   body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background-color: #F8F8F7;
-    color: #3D3D37;
+    background-color: #f8f8f7;
+    color: #3d3d37;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
+  html.dark body {
+    background-color: #161610;
+    color: #cbcbc7;
+  }
+
   #root {
     width: 100%;
+  }
+}
+
+/* Contact-row button hover fills (email, LinkedIn, GitHub, theme toggle).
+   Scoped to devices that actually support hovering — without this, a tap
+   on touch devices triggers :hover with no corresponding hover-out event,
+   leaving a button visually stuck in its hover color until some unrelated
+   tap elsewhere clears it. !important guards against Tailwind's own
+   dark:/base utility classes on the same element (equal specificity)
+   winning a cascade tie depending on minifier output order, which would
+   otherwise silently no-op the hover effect in some combinations. */
+@media (hover: hover) and (pointer: fine) {
+  .hover-fill-blue:hover {
+    border-color: transparent !important;
+    background-color: #185fa5 !important;
+    color: #fff !important;
   }
 }
 
