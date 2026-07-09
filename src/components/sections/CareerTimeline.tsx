@@ -139,50 +139,59 @@ function CareerTimelineHorizontal() {
 }
 
 function CareerTimelineVertical() {
-  return (
-    <div className="md:hidden relative" style={{ paddingBottom: 32, paddingLeft: 6 }}>
-      {/* Gradient path + forward arrowhead */}
-      <div
-        aria-hidden
-        className="absolute top-0"
-        style={{
-          left: 15,
-          bottom: 26,
-          width: 3,
-          background: 'linear-gradient(180deg, #185FA5 0%, #0F6E56 100%)',
-          borderRadius: 2,
-        }}
-      />
-      <div
-        aria-hidden
-        className="absolute"
-        style={{
-          left: 10,
-          bottom: 0,
-          width: 0,
-          height: 0,
-          borderLeft: '7px solid transparent',
-          borderRight: '7px solid transparent',
-          borderTop: '13px solid #0F6E56',
-        }}
-      />
+  // Fixed intrinsic width = node (24px) + gap (16px) + label max-width (150px),
+  // centered as one unit via mx-auto. The line/arrow below are positioned
+  // relative to this centered column (not the full-width section), so they
+  // track the node centers regardless of viewport width.
+  const COLUMN_WIDTH = 190
+  const NODE_CENTER = 12
 
-      <div className="relative flex flex-col">
-        {timelineMilestones.map((milestone, i) => {
-          return (
-            <div
-              key={milestone.id}
-              style={{ marginBottom: i === timelineMilestones.length - 1 ? 0 : 34 }}
-            >
-              <div className="flex items-start gap-4">
-                <TimelineNode milestone={milestone} />
-                <div className="pt-0.5">
-                  <TimelineEntryText milestone={milestone} align="left" />
+  return (
+    <div className="md:hidden" style={{ paddingBottom: 32 }}>
+      <div className="relative mx-auto" style={{ width: COLUMN_WIDTH }}>
+        {/* Gradient path + forward arrowhead */}
+        <div
+          aria-hidden
+          className="absolute top-0"
+          style={{
+            left: NODE_CENTER - 1.5,
+            bottom: 26,
+            width: 3,
+            background: 'linear-gradient(180deg, #185FA5 0%, #0F6E56 100%)',
+            borderRadius: 2,
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute"
+          style={{
+            left: NODE_CENTER - 7,
+            bottom: 0,
+            width: 0,
+            height: 0,
+            borderLeft: '7px solid transparent',
+            borderRight: '7px solid transparent',
+            borderTop: '13px solid #0F6E56',
+          }}
+        />
+
+        <div className="relative flex flex-col">
+          {timelineMilestones.map((milestone, i) => {
+            return (
+              <div
+                key={milestone.id}
+                style={{ marginBottom: i === timelineMilestones.length - 1 ? 0 : 34 }}
+              >
+                <div className="flex items-start gap-4">
+                  <TimelineNode milestone={milestone} />
+                  <div className="pt-0.5">
+                    <TimelineEntryText milestone={milestone} align="left" />
+                  </div>
                 </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
     </div>
   )
