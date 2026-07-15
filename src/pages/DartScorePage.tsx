@@ -19,7 +19,7 @@ export default function DartScorePage() {
   return (
     <div
       className={`relative h-screen w-screen overflow-hidden transition-colors duration-300 ${
-        isDark ? 'bg-black' : 'bg-gray-100 dark:bg-gray-900'
+        isDark ? 'bg-black' : 'bg-gray-100'
       }`}
     >
       <ContactButton
@@ -28,7 +28,7 @@ export default function DartScorePage() {
         className={`fixed top-4 right-4 z-50 hover-fill-blue ${
           isDark
             ? 'border-gray-700 bg-gray-800 text-gray-200'
-            : 'border-black/[0.16] bg-black/[0.05] text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300'
+            : 'border-black/[0.16] bg-black/[0.05] text-gray-600'
         }`}
         icon={
           <span className="relative block w-4 h-4">
@@ -68,7 +68,9 @@ export default function DartScorePage() {
       </div>
 
       <p
-        className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-gray-400 dark:text-gray-500"
+        className={`absolute bottom-2 left-1/2 -translate-x-1/2 text-xs ${
+          isDark ? 'text-gray-500' : 'text-gray-400'
+        }`}
         style={{ fontFamily: 'Inter, sans-serif' }}
       >
         © 2026 Kay Gijzen
