@@ -1,4 +1,7 @@
+import { useState } from 'react'
+import { Moon, Sun } from 'lucide-react'
 import { PhoneMockup } from '../components/PhoneMockup'
+import { ContactButton } from '../components/ui/ContactButton'
 import { useResponsiveScale } from '../hooks/useResponsiveScale'
 
 // PhoneMockup's actual rendered footprint (screen + bezel padding) — must
@@ -11,9 +14,40 @@ const CAPTION_RESERVED_HEIGHT = 40
 
 export default function DartScorePage() {
   const scale = useResponsiveScale(BEZEL_WIDTH, BEZEL_HEIGHT + CAPTION_RESERVED_HEIGHT)
+  const [isDark, setIsDark] = useState(false)
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-gray-100 dark:bg-gray-900">
+    <div
+      className={`relative h-screen w-screen overflow-hidden transition-colors duration-300 ${
+        isDark ? 'bg-black' : 'bg-gray-100 dark:bg-gray-900'
+      }`}
+    >
+      <ContactButton
+        onClick={() => setIsDark((prev) => !prev)}
+        ariaLabel="Toggle background color"
+        className={`fixed top-4 right-4 z-50 hover-fill-blue ${
+          isDark
+            ? 'border-gray-700 bg-gray-800 text-gray-200'
+            : 'border-black/[0.16] bg-black/[0.05] text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300'
+        }`}
+        icon={
+          <span className="relative block w-4 h-4">
+            <Sun
+              size={16}
+              className={`absolute inset-0 transition-all duration-300 ${
+                isDark ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'
+              }`}
+            />
+            <Moon
+              size={16}
+              className={`absolute inset-0 transition-all duration-300 ${
+                isDark ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'
+              }`}
+            />
+          </span>
+        }
+      />
+
       <div className="absolute inset-0 flex items-center justify-center p-8">
         {/*
           transform: scale() shrinks the mockup visually but not its layout
