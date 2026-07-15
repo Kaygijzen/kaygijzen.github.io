@@ -62,7 +62,7 @@ export default function DartScorePage() {
             className="dartscore-scale-wrapper"
             style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
           >
-            <PhoneMockup src="/dartscore-app/index.html" />
+            <PhoneMockup src="/dartscore-build/index.html" />
           </div>
         </div>
       </div>
