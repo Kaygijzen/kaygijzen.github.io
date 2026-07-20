@@ -41,6 +41,13 @@ export interface TimelineMilestone {
   current?: boolean
 }
 
+export interface AppInfo {
+  id: string
+  name: string
+  appStoreUrl: string | null
+  playStoreUrl: string | null
+}
+
 export interface PersonalCard {
   title: string
   subtitle: string
