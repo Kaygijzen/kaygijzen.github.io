@@ -6,16 +6,11 @@
     <script>
       // Applied synchronously, before first paint, so there's no flash of
       // the wrong theme. A stored manual choice always wins; otherwise we
-      // follow the OS preference. Kept in sync by src/hooks/useTheme.ts.
+      // default to light. Kept in sync by src/hooks/useTheme.ts.
       ;(function () {
         try {
           var stored = localStorage.getItem('theme')
-          var theme =
-            stored === 'light' || stored === 'dark'
-              ? stored
-              : window.matchMedia('(prefers-color-scheme: dark)').matches
-                ? 'dark'
-                : 'light'
+          var theme = stored === 'dark' ? 'dark' : 'light'
           if (theme === 'dark') document.documentElement.classList.add('dark')
         } catch (e) {}
       })()
